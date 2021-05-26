@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "566905259181",
+    "firebase_url": "https://bmis-2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bmis-2",
+    "storage_bucket": "bmis-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566905259181:android:1498313561242b7625f224",
+        "android_client_info": {
+          "package_name": "com.example.bmis_passenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566905259181-rdv7ig5lvpr9rn5mo401u6c5si74vnrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk1S-XX3fDXRsFLevCrajU2tmHjrGjExE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566905259181-rdv7ig5lvpr9rn5mo401u6c5si74vnrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566905259181:android:effdf489e9cebf0825f224",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566905259181-rdv7ig5lvpr9rn5mo401u6c5si74vnrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk1S-XX3fDXRsFLevCrajU2tmHjrGjExE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566905259181-rdv7ig5lvpr9rn5mo401u6c5si74vnrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
