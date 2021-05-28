@@ -42,16 +42,21 @@ class RideModel {
       scheduledTime: json['ride']['departure_time'],
       rideDate: json['ride']['ride_date'],
       route: RouteModel.fromJson(json['ride']['route']),
-      driverName:
-          json['ride']['bus']['driver']['employee_profile']['last_name'] + ', ' + json['ride']['bus']['driver']['employee_profile']['first_name'],
-      booked: json['booked'] ?? null,
-      aboard: json['aboard'] ?? null,
+      driverName: json['ride']['bus']['driver']['employee_profile']
+              ['last_name'] +
+          ', ' +
+          json['ride']['bus']['driver']['employee_profile']['first_name'],
+      booked: json['booked'] != null ? int.parse(json['booked']) : null,
+      aboard: json['aboard'] != null ? int.parse(json['aboard']) : null,
       exists: json['exists'] != null ? 1 : 0,
-      departureTime: json['exists'] != null && json['exists']['departure'] != null
-          ? formatTime(DateTime.parse(json['exists']['departure']['time']).toLocal())
-          : null,
+      departureTime:
+          json['exists'] != null && json['exists']['departure'] != null
+              ? formatTime(
+                  DateTime.parse(json['exists']['departure']['time']).toLocal())
+              : null,
       arrivalTime: json['exists'] != null && json['exists']['arrival'] != null
-          ? formatTime(DateTime.parse(json['exists']['arrival']['time']).toLocal())
+          ? formatTime(
+              DateTime.parse(json['exists']['arrival']['time']).toLocal())
           : null,
     );
   }

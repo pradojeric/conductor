@@ -28,9 +28,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget build(BuildContext context) {
     return ProgressHud(
-        child: _uiSetup(context),
-        inAsyncCall: isApiCallProcess,
-        opacity: 0.3,
+      child: _uiSetup(context),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
     );
   }
 
@@ -150,46 +150,47 @@ class _LoginPageState extends State<LoginPage> {
                                 isApiCallProcess = true;
                               });
                               APIService apiService = new APIService();
-                              apiService.login(loginRequestModel)
+                              apiService
+                                  .login(loginRequestModel)
                                   .catchError((e) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (value) {
-                                          return AlertDialog(
-                                            title: Text('Error!'),
-                                            content: Text('$value'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                  onPressed: () => { Navigator.pop(context),}
-                                                  , child: Text('Ok')
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  })
-                                  .then((value) {
-                                    setState(() {
-                                      isApiCallProcess = false;
-                                    });
-                                    if (value.token.isNotEmpty) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                              content: Text("Login Successful")));
-
-                                      SharedService.setLoginDetails(value);
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => HomePage()),
-                                        (Route<dynamic> route) => false,
+                                showDialog(
+                                    context: context,
+                                    builder: (value) {
+                                      return AlertDialog(
+                                        title: Text('Error!'),
+                                        content: Text('$e'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () => {
+                                                    Navigator.pop(context),
+                                                  },
+                                              child: Text('Ok')),
+                                        ],
                                       );
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                              content: Text(
-                                                  "Login Failed! Please Check Your Credentials")));
-                                    }
-                                  });
+                                    });
+                              }).then((value) {
+                                setState(() {
+                                  isApiCallProcess = false;
+                                });
+                                if (value.token.isNotEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text("Login Successful")));
 
+                                  SharedService.setLoginDetails(value);
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()),
+                                    (Route<dynamic> route) => false,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "Login Failed! Please Check Your Credentials")));
+                                }
+                              });
                             }
                           },
                           child: Text(

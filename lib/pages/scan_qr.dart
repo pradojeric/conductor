@@ -23,7 +23,8 @@ class _ScanPageState extends State<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHud(child: homePage(context), inAsyncCall: isLoggingOut, opacity: 0.3);
+    return ProgressHud(
+        child: homePage(context), inAsyncCall: isLoggingOut, opacity: 0.3);
   }
 
   Widget homePage(BuildContext context) {
@@ -85,15 +86,25 @@ class _ScanPageState extends State<ScanPage> {
       true,
       ScanMode.QR,
     );
-
+    print(qrCode);
     if (!mounted) return;
-    if(qrCode != '-1'){
-      ConductorBloc().issueTicket(qrCode).then((value){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text("Ticket issued!"),
+    if (qrCode != '-1') {
+      ConductorBloc().issueTicket(qrCode.trim()).then((value) {
+        print(value);
+        if (value['error'] != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("${value['error']}!"),
             ),
           );
+          return;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Ticket issued!"),
+          ),
+        );
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -101,7 +112,7 @@ class _ScanPageState extends State<ScanPage> {
         );
       });
     }
-    
+
     print(qrCode);
     return;
   }

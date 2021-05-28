@@ -44,7 +44,10 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHud(child: schedulePage(context, widget.ride), inAsyncCall: isLoggingOut, opacity: 0.3);
+    return ProgressHud(
+        child: schedulePage(context, widget.ride),
+        inAsyncCall: isLoggingOut,
+        opacity: 0.3);
   }
 
   @override
@@ -58,7 +61,12 @@ class _SchedulePageState extends State<SchedulePage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => {Navigator.pop(context)},
+          onPressed: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            )
+          },
         ),
         backgroundColor: Colors.blue[900],
         elevation: 0.0,
@@ -129,7 +137,6 @@ class _SchedulePageState extends State<SchedulePage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 30),
                               child: Row(
-                                
                                 children: [
                                   Icon(Icons.location_city),
                                   SizedBox(
@@ -150,10 +157,12 @@ class _SchedulePageState extends State<SchedulePage> {
                       width: 150,
                       child: textButton(context, ride),
                     ),
-                    ride.exists == 1 ? LabelButton(
-                      liteText: 'Track again',
-                      pressed: () => beginTrack(),
-                    ) : Text(''),
+                    ride.exists == 1
+                        ? LabelButton(
+                            liteText: 'Track again',
+                            pressed: () async => beginTrack(),
+                          )
+                        : Text(''),
                   ],
                 ),
               ],
@@ -198,27 +207,26 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   departure() async {
-
-    await beginTrack();
+    await beginTrack().then((_) {
+      ConductorBloc().rideDeparture(rideJson).then((_) => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          ));
+    });
   }
 
-  beginTrack() async 
-  {
+  beginTrack() async {
+    print('Begin tracking');
     BackgroundLocation.getPermissions(
       onGranted: () {
         // Start location service here or do something else
         BackgroundLocation.setAndroidNotification(
           title: 'Location Running',
-          message:
-              'Do not stop the trip until you reach your destination',
+          message: 'Do not stop the trip until you reach your destination',
           icon: '@mipmap/ic_launcher',
         );
-
         BackgroundLocation.setAndroidConfiguration(1000);
-
-        BackgroundLocation.startLocationService(
-            distanceFilter: 20);
-
+        BackgroundLocation.startLocationService(distanceFilter: 20);
         BackgroundLocation.getLocationUpdates((location) {
           setState(() {
             latitude = location.latitude.toString();
@@ -229,11 +237,6 @@ class _SchedulePageState extends State<SchedulePage> {
                 .set({'lat': latitude, 'long': longitude});
           });
         });
-        ConductorBloc().rideDeparture(rideJson).then((_) => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (Route<dynamic> route) => false,
-        ));
       },
       onDenied: () {
         print('Please grant permission');
@@ -246,10 +249,9 @@ class _SchedulePageState extends State<SchedulePage> {
     BackgroundLocation.stopLocationService();
     databaseReference.child('ride${widget.ride.id}').remove();
     ConductorBloc().rideArrival().then((value) => Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => ReviewPage(widget.ride)),
-      (Route<dynamic> route) => false,
-    ));
+          context,
+          MaterialPageRoute(builder: (context) => ReviewPage(widget.ride)),
+          (Route<dynamic> route) => false,
+        ));
   }
 }
-

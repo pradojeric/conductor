@@ -24,7 +24,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ProgressHud(child: homePage(context), inAsyncCall: isLoggingOut, opacity: 0.3);
+    return ProgressHud(
+        child: homePage(context), inAsyncCall: isLoggingOut, opacity: 0.3);
   }
 
   Widget homePage(BuildContext context) {
@@ -101,9 +102,10 @@ class _HomePageState extends State<HomePage> {
                               shape: StadiumBorder(),
                             ),
                             onPressed: () => {
-                               Navigator.push(
+                              Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => ScanPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => ScanPage()),
                               )
                             },
                             child: Text(
@@ -128,10 +130,12 @@ class ScheduleTodayFutureBuilder extends StatefulWidget {
   const ScheduleTodayFutureBuilder({Key key}) : super(key: key);
 
   @override
-  _ScheduleTodayFutureBuilderState createState() => _ScheduleTodayFutureBuilderState();
+  _ScheduleTodayFutureBuilderState createState() =>
+      _ScheduleTodayFutureBuilderState();
 }
 
-class _ScheduleTodayFutureBuilderState extends State<ScheduleTodayFutureBuilder> {
+class _ScheduleTodayFutureBuilderState
+    extends State<ScheduleTodayFutureBuilder> {
   ConductorBloc con = ConductorBloc();
 
   @override
@@ -187,9 +191,9 @@ class _ScheduleTodayFutureBuilderState extends State<ScheduleTodayFutureBuilder>
           ),
           onPressed: () => {
             Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => SchedulePage(snapshot.data))
-            )
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SchedulePage(snapshot.data)))
           },
           child: Text(
             'VIEW',

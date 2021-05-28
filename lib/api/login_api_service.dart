@@ -10,8 +10,7 @@ class APIService {
   Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
     var url = Uri.parse('$API_URL/api/conductor/login');
     final response = await http.post(url, body: requestModel.toJson());
-    print(response.body);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return LoginResponseModel.fromJson(
         json.decode(response.body),
       );
