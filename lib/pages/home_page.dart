@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ProgressHud.dart';
 import 'package:flutter_app/api/conductor_data_api.dart';
+import 'package:flutter_app/pages/my_schedule_page.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../model/ride_model.dart';
 import 'package:flutter_app/widgets/reusable_card.dart';
@@ -54,38 +55,14 @@ class _HomePageState extends State<HomePage> {
               Text('Welcome!'),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     ReusableCard(
                       cardChild: ScheduleTodayFutureBuilder(),
                     ),
-                    // ReusableCard(
-                    //   cardChild: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: <Widget>[
-                    //       Text('Next Schedule'),
-                    //       SizedBox(
-                    //         height: 10.0,
-                    //       ),
-                    //       Text('Date: 2021/05/15'),
-                    //       Text('Route: Dagupan - Cubao'),
-                    //       Text('Time: 13:00'),
-                    //       SizedBox(height: 10.0),
-                    //       TextButton(
-                    //         style: TextButton.styleFrom(
-                    //           primary: Colors.white,
-                    //           minimumSize: Size(195, 20),
-                    //           backgroundColor: Theme.of(context).accentColor,
-                    //           shape: StadiumBorder(),
-                    //         ),
-                    //         onPressed: () => {},
-                    //         child: Text(
-                    //           'VIEW ALL',
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    ReusableCard(
+                      cardChild: NextScheduleFutureBuilder(),
+                    ),
                     ReusableCard(
                       cardChild: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -211,12 +188,60 @@ class NextScheduleFutureBuilder extends StatefulWidget {
 }
 
 class _NextScheduleFutureBuilderState extends State<NextScheduleFutureBuilder> {
+  ConductorBloc con = ConductorBloc();
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: null,
+    return FutureBuilder<List<RideModel>>(
+        future: con.getAllRides(),
         builder: (context, snapshot) {
-          return Text('');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+              break;
+            case ConnectionState.active:
+            case ConnectionState.done:
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Next Schedule'),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text('Date: ${snapshot.data.first.rideDate}'),
+                  Text('Route: ${snapshot.data.first.route.routeName}'),
+                  Text('Time: ${snapshot.data.first.scheduledTime}'),
+                  SizedBox(height: 10.0),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      minimumSize: Size(195, 20),
+                      backgroundColor: Theme.of(context).accentColor,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MySchedulesPage(snapshot.data),
+                          )),
+                    },
+                    child: Text(
+                      'VIEW ALL',
+                    ),
+                  ),
+                ],
+              );
+              break;
+            default:
+              return Text('No rides Today');
+              break;
+          }
         });
   }
 }

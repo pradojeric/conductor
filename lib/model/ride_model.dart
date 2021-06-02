@@ -30,8 +30,6 @@ class RideModel {
       this.departureTime});
 
   factory RideModel.fromJson(Map<String, dynamic> json) {
-    print(json['ride']);
-
     String formatTime(DateTime date) {
       return DateFormat.jms().format(date);
     }
@@ -40,7 +38,7 @@ class RideModel {
       id: json['ride']['ride_id'],
       bus: json['ride']['bus_no'],
       scheduledTime: json['ride']['departure_time'],
-      rideDate: json['ride']['ride_date'],
+      rideDate: json['ride']['ride_date'] ?? json['date'],
       route: RouteModel.fromJson(json['ride']['route']),
       driverName: json['ride']['bus']['driver']['employee_profile']
               ['last_name'] +

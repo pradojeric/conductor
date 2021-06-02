@@ -12,6 +12,23 @@ class ConductorBloc {
   Future<List<RideModel>> getAllRides() async {
     final prefs = await SharedPreferences.getInstance();
     String token = jsonDecode(prefs.getString("login_details"))["token"];
+    String url = '$API_URL/api/conductor/get-all-schedules';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $token',
+    });
+
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+
+      List<RideModel> rideList = [];
+      for (int i = 0; i < body.length; i++) {
+        RideModel r = RideModel.fromJson(body[i]);
+        rideList.add(r);
+      }
+      return rideList;
+    } else {
+      throw Exception('No Data');
+    }
   }
 
   Future<RideModel> getRideToday() async {
@@ -27,7 +44,7 @@ class ConductorBloc {
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
-      print(body['ride']);
+
       if (body['error'] != null) {
         return null;
       } else {
