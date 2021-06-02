@@ -203,3 +203,20 @@ class _ScheduleTodayFutureBuilderState
     );
   }
 }
+
+class NextScheduleFutureBuilder extends StatefulWidget {
+  @override
+  _NextScheduleFutureBuilderState createState() =>
+      _NextScheduleFutureBuilderState();
+}
+
+class _NextScheduleFutureBuilderState extends State<NextScheduleFutureBuilder> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: null,
+        builder: (context, snapshot) {
+          return Text('');
+        });
+  }
+}
