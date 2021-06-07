@@ -86,7 +86,9 @@ class _ScanPageState extends State<ScanPage> {
       true,
       ScanMode.QR,
     );
+
     print(qrCode);
+
     if (!mounted) return;
     if (qrCode != '-1') {
       ConductorBloc().issueTicket(qrCode.trim()).then((value) {
@@ -113,7 +115,6 @@ class _ScanPageState extends State<ScanPage> {
       });
     }
 
-    print(qrCode);
     return;
   }
 }

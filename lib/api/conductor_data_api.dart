@@ -22,6 +22,7 @@ class ConductorBloc {
 
       List<RideModel> rideList = [];
       for (int i = 0; i < body.length; i++) {
+        print(body[i]['ride']['bus']['driver']);
         RideModel r = RideModel.fromJson(body[i]);
         rideList.add(r);
       }
@@ -44,7 +45,7 @@ class ConductorBloc {
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
-
+      print(body);
       if (body['error'] != null) {
         return null;
       } else {
@@ -92,8 +93,10 @@ class ConductorBloc {
   Future issueTicket(String bookingCode) async {
     var json = await getToken();
     String token = json['token'];
+    print(token);
 
     String url = '$API_URL/api/conductor/issue-receipt/$bookingCode';
+    print(url);
     final response = await API.getResponse(uri: url, token: token);
     return response;
   }

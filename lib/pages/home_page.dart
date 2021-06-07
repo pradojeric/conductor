@@ -134,6 +134,7 @@ class _ScheduleTodayFutureBuilderState
           else if (snapshot.hasData) {
             return _contain(snapshot);
           } else if (snapshot.hasError) {
+            print(snapshot.error);
             return Text('Please connect to the internet!');
           } else {
             return Text('No rides today');
@@ -205,41 +206,46 @@ class _NextScheduleFutureBuilderState extends State<NextScheduleFutureBuilder> {
               break;
             case ConnectionState.active:
             case ConnectionState.done:
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Next Schedule'),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text('Date: ${snapshot.data.first.rideDate}'),
-                  Text('Route: ${snapshot.data.first.route.routeName}'),
-                  Text('Time: ${snapshot.data.first.scheduledTime}'),
-                  SizedBox(height: 10.0),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      minimumSize: Size(195, 20),
-                      backgroundColor: Theme.of(context).accentColor,
-                      shape: StadiumBorder(),
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Next Schedule'),
+                    SizedBox(
+                      height: 10.0,
                     ),
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                MySchedulesPage(snapshot.data),
-                          )),
-                    },
-                    child: Text(
-                      'VIEW ALL',
+                    Text('Date: ${snapshot.data.first.rideDate}'),
+                    Text('Route: ${snapshot.data.first.route.routeName}'),
+                    Text('Time: ${snapshot.data.first.scheduledTime}'),
+                    SizedBox(height: 10.0),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        minimumSize: Size(195, 20),
+                        backgroundColor: Theme.of(context).accentColor,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MySchedulesPage(snapshot.data),
+                            )),
+                      },
+                      child: Text(
+                        'VIEW ALL',
+                      ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              } else {
+                return Text('No rides Today');
+              }
+
               break;
             default:
-              return Text('No rides Today');
+              return Text('Connect to the internet!');
               break;
           }
         });

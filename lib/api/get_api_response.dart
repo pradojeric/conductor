@@ -8,10 +8,7 @@ class API {
     final response = await http.get(url, headers: {
       'Authorization': 'Bearer $token',
     });
-
     if (response.statusCode == 200) {
-      var r = jsonDecode(response.body);
-
       return jsonDecode(response.body);
     } else {
       throw Exception('Cannot connect to server!');

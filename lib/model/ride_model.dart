@@ -34,18 +34,21 @@ class RideModel {
       return DateFormat.jms().format(date);
     }
 
+    String dName = json['ride']['bus']['driver'] != null
+        ? json['ride']['bus']['driver']['employee_profile']['last_name'] +
+            ', ' +
+            json['ride']['bus']['driver']['employee_profile']['first_name']
+        : 'No drivers yet';
+
     return RideModel(
       id: json['ride']['ride_id'],
       bus: json['ride']['bus_no'],
       scheduledTime: json['ride']['departure_time'],
       rideDate: json['ride']['ride_date'] ?? json['date'],
       route: RouteModel.fromJson(json['ride']['route']),
-      driverName: json['ride']['bus']['driver']['employee_profile']
-              ['last_name'] +
-          ', ' +
-          json['ride']['bus']['driver']['employee_profile']['first_name'],
-      booked: json['booked'] != null ? int.parse(json['booked']) : null,
-      aboard: json['aboard'] != null ? int.parse(json['aboard']) : null,
+      driverName: dName,
+      booked: json['booked'],
+      aboard: json['aboard'],
       exists: json['exists'] != null ? 1 : 0,
       departureTime:
           json['exists'] != null && json['exists']['departure'] != null
@@ -59,3 +62,8 @@ class RideModel {
     );
   }
 }
+
+      // driverName: json['ride']['bus']['driver']['employee_profile']
+      //         ['last_name'] +
+      //     ', ' +
+      //     json['ride']['bus']['driver']['employee_profile']['first_name'],
